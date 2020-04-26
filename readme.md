@@ -1,6 +1,6 @@
 # Yamaha <> Chromecast two-way integration
 
-Quick project to act as a two-integration between supported Yamaha receiver and Google Chromecast.  
+This app acts as a two-integration between supported Yamaha receiver and Google Chromecast.  
 When spotify starts on a target chromecast device, receiver input & dsp program is set for music.  
 When spotify stops receiver dsp setting is restored.  
 When receiver input changes, spotify is stopped.  
