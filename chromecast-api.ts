@@ -1,6 +1,6 @@
 import {Client, DefaultMediaReceiver} from "castv2-client"
 import * as mdns from "mdns-js"
-import { setupReceiverForMusicPlayback } from "./yamaha-api"
+import { setupReceiverForMusicPlayback, setupReceiverForTvPlayback } from "./yamaha-api"
 import { config } from "./config"
 import * as util from "util"
 
@@ -68,17 +68,19 @@ const ondeviceup = async (host, port, deviceName) => {
     let isPlaying = false
     const onStatus = async (status) => {
       const applications = status?.applications || []
-      const isSpotify = !!(applications[0]?.displayName === 'Spotify')
-      console.log(`onStatus ${deviceName} isSpotify: ${isSpotify} isPlaying: ${isPlaying}`)
+      const appId = applications[0]?.appId
+      const isMusicApp = Object.keys(config.musicApps).includes(appId)
+      // console.log(`onStatus ${deviceName} isMusicApp: ${isMusicApp} isPlaying: ${isPlaying}`)
 
-      if(!isPlaying && isSpotify){
-        console.log("started playing", deviceName)
+      if(!isPlaying && isMusicApp){
+        console.log(`started playing ${appId} device: ${deviceName}`)
         await setVolume(client, 1)
         await setupReceiverForMusicPlayback(stopPlayback(client))
         isPlaying = true
       }
-      if(isPlaying && !isSpotify){
+      if(isPlaying && !isMusicApp){
         console.log("stopped playing", deviceName)
+        await setupReceiverForTvPlayback()
         isPlaying = false
       }
     }

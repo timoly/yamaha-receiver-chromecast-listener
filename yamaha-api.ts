@@ -44,14 +44,23 @@ const stopChromecastPlaybackOnYamahaInputChange = (yamaha: any, ip: string, stop
 }
 
 export const setupReceiverForMusicPlayback = async (stopChromecastPlayback: () => Promise<void>) => {
+  console.log("setupReceiverForMusicPlayback")
   const {yamaha, ip} = await connectToYamaha()
   await yamaha.powerOn()
+  await yamaha.setVolume(config.yamahaSettings.music.volume)
   await yamaha.setMainInputTo(config.yamahaSettings.music.input)
   await yamaha.muteOff()
-  await yamaha.setVolume("-420")
   await setDsp(ip, config.yamahaSettings.music.program)
 
   console.log("yamaha ready for music playback")
 
   stopChromecastPlaybackOnYamahaInputChange(yamaha, ip, stopChromecastPlayback)  
+}
+
+export const setupReceiverForTvPlayback = async () => {
+  console.log("setupReceiverForTvPlayback")
+  const {yamaha, ip} = await connectToYamaha()
+  await yamaha.setVolume(config.yamahaSettings.tv.volume)
+  await setDsp(ip, config.yamahaSettings.tv.program)
+  console.log("yamaha ready for tv playback")
 }
