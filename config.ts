@@ -10,15 +10,16 @@ export const config = {
   targetSpeakers: ["Living room"],
   // get http://{yamaha ip}/YamahaExtendedControl/v1/main/getSoundProgramList
   yamahaSettings: {
+    ip: "192.168.1.102",
     music: {
       program: "7ch_stereo",
-      input: "HDMI1",
-      volume: "-450"
+      input: "hdmi1",
+      volume: 71
     },
     tv: {
       program: "standard",
-      input: "AV4",
-      volume: "-350"
+      input: "av4",
+      volume: 91
     }
   }
 }
